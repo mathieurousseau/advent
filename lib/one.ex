@@ -1,4 +1,4 @@
-defmodule One do
+defmodule Day01 do
   def run do
     input = File.read!("lib/inputs/one.txt")
     chunks = String.split(input, "\n\n")

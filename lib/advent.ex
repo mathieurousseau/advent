@@ -1,6 +1,6 @@
 defmodule Advent do
   @days [
-    One
+    Day01
   ]
 
   @spec run :: any
