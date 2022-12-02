@@ -1,6 +1,5 @@
 defmodule Day01 do
-  def run do
-    input = File.read!("lib/inputs/day_01.txt")
+  def run(input) do
     chunks = String.split(input, "\n\n")
     calories = Enum.map(chunks, fn chunk -> sum_chunk(chunk) end) |> Enum.sort(:desc)
     top_3 = Enum.take(calories, 3)

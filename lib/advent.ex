@@ -1,14 +1,19 @@
 defmodule Advent do
   @days [
-    Day01
+    Day01,
+    Day02
   ]
 
-  @spec run :: any
-  def run do
-    @days |> Enum.map(&%{&1 => &1.run()})
+  def run(path) do
+    @days
+    |> Enum.reduce(%{}, fn day_mod, acc ->
+      day = day_mod |> to_string |> String.replace(~r/Elixir\./, "") |> Macro.underscore()
+      input = File.read!("#{path}/#{day}.txt")
+      Map.put(acc, day_mod, day_mod.run(input))
+    end)
   end
 
   def print do
-    run() |> IO.inspect()
+    run("lib/inputs/") |> IO.inspect()
   end
 end
