@@ -2,7 +2,8 @@ defmodule Advent do
   @days [
     Day01,
     Day02,
-    Day03
+    Day03,
+    Day04
   ]
 
   def run(path) do
