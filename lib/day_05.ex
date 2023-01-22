@@ -1,5 +1,5 @@
 defmodule Day05 do
-  @spec run(binary) :: {1, 2}
+  @spec run(binary) :: {String.t(), String.t()}
   def run(input) do
     {part1(input), part2(input)}
   end

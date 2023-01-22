@@ -7,7 +7,8 @@ defmodule AdventTest do
     Day02 => {15, 12},
     Day03 => {157, 70},
     Day04 => {2, 4},
-    Day05 => {"CMZ", "MCD"}
+    Day05 => {"CMZ", "MCD"},
+    Day06 => {[7, 5, 6, 10, 11], [19, 23, 23, 29, 26]}
   }
 
   test "run " do
