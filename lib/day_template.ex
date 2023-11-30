@@ -1,4 +1,4 @@
-defmodule Day01 do
+defmodule DayXX do
   def run(input) do
     first_input = input
     first_output = first(first_input)
@@ -10,10 +10,8 @@ defmodule Day01 do
   end
 
   defp first(_first_input) do
-    nil
   end
 
   defp second(_second_input) do
-    nil
   end
 end
