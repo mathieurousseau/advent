@@ -1,17 +1,15 @@
 defmodule DayXX do
-  def run(input) do
-    first_input = input
-    first_output = first(first_input)
+  def run(input_1, input_2) do
+    output_1 = first(input_1)
 
-    second_input = input
-    second_output = second(second_input)
+    output_2 = second(input_2)
 
-    {first_output, second_output}
+    {output_1, output_2}
   end
 
-  defp first(_first_input) do
+  defp first(_input) do
   end
 
-  defp second(_second_input) do
+  defp second(_input) do
   end
 end

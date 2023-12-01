@@ -14,8 +14,15 @@ defmodule Advent do
     @days
     |> Enum.reduce(%{}, fn day_mod, acc ->
       day = day_mod |> to_string |> String.replace(~r/Elixir\./, "") |> Macro.underscore()
-      input = File.read!("#{path}/#{day}.txt")
-      Map.put(acc, day_mod, day_mod.run(input))
+
+      if File.exists?("#{path}/#{day}_1.txt") do
+        input_1 = File.read!("#{path}/#{day}_1.txt")
+        input_2 = File.read!("#{path}/#{day}_2.txt")
+        Map.put(acc, day_mod, day_mod.run(input_1, input_2))
+      else
+        input = File.read!("#{path}/#{day}.txt")
+        Map.put(acc, day_mod, day_mod.run(input, input))
+      end
     end)
   end
 
