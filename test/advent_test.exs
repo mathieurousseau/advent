@@ -3,8 +3,8 @@ defmodule AdventTest do
   doctest Advent
 
   @expected %{
-    Day01 => {142, 364}
-    # Day02 => {15, 12},
+    Day01 => {142, 364},
+    Day02 => {8, 2286}
     # Day03 => {157, 70},
     # Day04 => {2, 4},
     # Day05 => {"CMZ", "MCD"},
