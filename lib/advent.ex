@@ -1,29 +1,22 @@
 defmodule Advent do
-  @days [
-    Day01,
-    Day02
-    # Day03,
-    # Day04,
-    # Day05,
-    # Day06,
-    # Day07,
-    # Day08
-  ]
-
   def run(path) do
-    @days
-    |> Enum.reduce(%{}, fn day_mod, acc ->
-      day = day_mod |> to_string |> String.replace(~r/Elixir\./, "") |> Macro.underscore()
+    day =
+      "lib/days/day_??.ex"
+      |> Path.wildcard()
+      |> List.last()
+      |> tap(&Code.require_file(&1))
+      |> String.replace(~r/.*day_(\d\d).ex/, "day\\1")
 
-      if File.exists?("#{path}/#{day}_1.txt") do
-        input_1 = File.read!("#{path}/#{day}_1.txt")
-        input_2 = File.read!("#{path}/#{day}_2.txt")
-        Map.put(acc, day_mod, day_mod.run(input_1, input_2))
-      else
-        input = File.read!("#{path}/#{day}.txt")
-        Map.put(acc, day_mod, day_mod.run(input, input))
-      end
-    end)
+    day_mod = ("Elixir." <> String.capitalize(day)) |> String.to_atom()
+
+    if File.exists?("#{path}/#{day}_1.txt") do
+      input_1 = File.read!("#{path}/#{day}_1.txt")
+      input_2 = File.read!("#{path}/#{day}_2.txt")
+      day_mod.run(input_1, input_2)
+    else
+      input = File.read!("#{path}/#{day}.txt")
+      day_mod.run(input, input)
+    end
   end
 
   def print do

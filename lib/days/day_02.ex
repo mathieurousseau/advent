@@ -1,10 +1,11 @@
 defmodule Day02 do
+  @expected {8, 2286}
   def run(input_1, input_2) do
     output_1 = first(input_1)
 
     output_2 = second(input_2)
 
-    {output_1, output_2}
+    {{output_1, output_2}, @expected}
   end
 
   @available_cubes %{"red" => 12, "green" => 13, "blue" => 14}

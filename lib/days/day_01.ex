@@ -1,10 +1,11 @@
 defmodule Day01 do
+  @expected {142, 364}
   def run(input_1, input_2) do
     output_1 = first(input_1)
 
     output_2 = second(input_2)
 
-    {output_1, output_2}
+    {{output_1, output_2}, @expected}
   end
 
   defp first(input) do

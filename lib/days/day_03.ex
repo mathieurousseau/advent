@@ -1,4 +1,4 @@
-defmodule DayXX do
+defmodule Day03 do
   @expected {"TBD", "TBD"}
   def run(input_1, input_2) do
     output_1 = first(input_1)
