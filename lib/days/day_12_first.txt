@@ -1,0 +1,96 @@
+defmodule Day12 do
+  @expected {"TBD", "TBD"}
+  def run(input_1, input_2) do
+    output_1 = first(input_1)
+
+    output_2 = second(input_2)
+
+    {{output_1, output_2}, @expected}
+  end
+
+  defp first(input) do
+    parse_data(input) |> Enum.map(&process_line(&1)) |> Enum.sum()
+  end
+
+  defp process_line({springs, checks}) do
+    springs = String.graphemes(springs)
+    last_idx = length(checks) - 1
+    # 0..last_idx |> Enum.reduce(&waklk(&1))
+    # |> Enum.sum()
+    walk([], 0, springs, checks)
+  end
+
+  # defpwalk(f, l, springs, checks) do
+  #   if length(springs) < length(checks) - 1 + Enum.sum(checks) - l do
+  #     0
+  #   else
+  #     do_walk(0, springs, checks)
+  #   end
+  # end
+  defp walk(f, l, springs, checks), do: do_walk(f, l, springs, checks)
+
+  defp do_walk(_f, _, springs, []) do
+    if "#" in springs do
+      0
+    else
+      1
+    end
+  end
+
+  defp do_walk(_f, l, _, [c | _]) when l > c, do: 0
+
+  defp do_walk(f, l, [], [l]) do
+    print(f)
+    1
+  end
+
+  defp do_walk(f, l, [], []) do
+    print(f)
+    1
+  end
+
+  defp do_walk(f, l, ["."], [l]) do
+    print(f)
+    1
+  end
+
+  defp print(springs) do
+    springs |> Enum.reverse() |> Enum.join() |> IO.puts()
+  end
+
+  defp do_walk(_f, l, _, [c | _]) when l > c, do: 0
+  defp do_walk(_f, l, [], [c | nil]) when l < c, do: 0
+  defp do_walk(_f, l, [], [c | _]), do: 0
+  defp do_walk(_f, 0, [], [_ | _]), do: 0
+  defp do_walk(f, 0, ["." | r_springs], checks), do: walk(["." | f], 0, r_springs, checks)
+
+  defp do_walk(_f, l, ["." | _], [c | _]) when l < c, do: 0
+
+  defp do_walk(f, l, ["." | r_springs], [c | r_checks]) when l == c,
+    do: walk(["." | f], 0, r_springs, r_checks)
+
+  defp do_walk(f, l, ["?" | r_springs], [c | r_checks]) when l == c,
+    do: walk(["." | f], 0, r_springs, r_checks)
+
+  defp do_walk(f, 0, ["?" | r_springs], checks),
+    do: walk(["#" | f], 1, r_springs, checks) + walk(["." | f], 0, r_springs, checks)
+
+  defp do_walk(f, l, ["?" | r_springs], checks),
+    do: walk(["#" | f], l + 1, r_springs, checks)
+
+  defp do_walk(f, l, ["#" | r_springs], checks), do: walk(["#" | f], l + 1, r_springs, checks)
+
+  defp parse_data(input) do
+    input
+    |> String.split("\n")
+    |> Enum.reduce([], fn line, acc ->
+      [springs, checks] = line |> String.split(" ")
+      checks = String.split(checks, ",") |> Enum.map(&String.to_integer(&1))
+      [{springs, checks} | acc]
+    end)
+    |> Enum.reverse()
+  end
+
+  defp second(_input) do
+  end
+end
