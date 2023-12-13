@@ -20,6 +20,7 @@ defmodule Advent do
   end
 
   def print do
-    # run("lib/inputs/") |> IO.inspect()
+    run("lib/inputs/") |> IO.inspect()
+    IO.puts("\n\n---- TEST DATA ----\n\n")
   end
 end

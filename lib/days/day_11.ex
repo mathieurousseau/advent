@@ -107,7 +107,7 @@ defmodule Day11 do
     end)
   end
 
-  defp transpose(lines) do
+  def transpose(lines) do
     lines
     |> Enum.reduce(%{}, fn line, acc ->
       line
