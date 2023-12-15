@@ -12,114 +12,110 @@ defmodule Day12 do
     # Agent.get(:memoization, fn value -> IO.puts("mathieu #{inspect(value)}") end)
 
     parse_data(input)
-    |> Enum.map(&spawn_process_line(&1))
-    |> Enum.sum()
-  end
-
-  defp spawn_process_line(line) do
-    process_line(line)
+    |> Task.async_stream(&process_line(&1))
+    |> Enum.reduce(0, fn {:ok, num}, acc -> num + acc end)
   end
 
   defp process_line({springs, checks}) do
-    {:ok, pid} = Agent.start_link(fn -> %{} end, name: :memoization)
+    # {:ok, pid} = Agent.start_link(fn -> %{} end, name: :memoization)
     springs = String.graphemes(springs)
-    last_idx = length(checks) - 1
     # 0..last_idx |> Enum.reduce(&waklk(&1))
     # |> Enum.sum()
-    value = walk([], 0, springs, checks, pid) |> dbg
-    Agent.stop(pid)
-    value
+    {result, memo} = walk([], 0, springs, checks, %{})
+    # Agent.stop(pid)
+    result
   end
 
-  defp walk(f, l, springs, checks, pid) do
+  defp walk(f, l, springs, checks, memo) do
     # case Map.get(memo, {l, springs, checks}) do
     #   nil -> do_walk(f, l, springs, checks, memo)
     #   r -> r
     # end
-    map = Agent.get(pid, fn state -> state end)
+    # map = Agent.get(pid, fn state -> state end)
 
-    case Map.get(map, {l, springs, checks}) do
-      nil -> do_walk(f, l, springs, checks, pid) |> put_in_memo(l, springs, checks, pid)
-      r -> r
+    case Map.get(memo, {l, springs, checks}) do
+      nil ->
+        do_walk(f, l, springs, checks, memo)
+        |> put_in_memo(l, springs, checks)
+
+      r ->
+        {r, memo}
     end
   end
 
   defp walk(f, l, springs, checks, memo) do
     if length(springs) < length(checks) - 1 + Enum.sum(checks) - l do
-      put_in_memo(0, l, springs, checks, memo)
+      {0, put_in_memo({0, memo}, l, springs, checks)}
     else
-      do_walk(f, 0, springs, checks, memo) |> put_in_memo(l, springs, checks, memo)
+      {res, memo} = do_walk(f, 0, springs, checks, memo)
+      put_in_memo(l, springs, checks, memo)
     end
   end
 
-  defp do_walk(_f, _, springs, [], _memo) do
+  defp do_walk(_f, _, springs, [], memo) do
     if "#" in springs do
-      0
+      {0, memo}
     else
-      1
+      {1, memo}
     end
   end
 
-  defp do_walk(_f, l, _, [c | _], _memo) when l > c, do: 0
+  defp do_walk(_f, l, _, [c | _], memo) when l > c, do: {0, memo}
 
-  defp do_walk(f, l, [], [l], _memo) do
+  defp do_walk(f, l, [], [l], memo) do
     print(f)
-    1
+    {1, memo}
   end
 
-  defp do_walk(f, l, [], [], _memo) do
+  defp do_walk(f, l, [], [], memo) do
     print(f)
-    1
+    {1, memo}
   end
 
-  defp do_walk(f, l, ["."], [l], _memo) do
+  defp do_walk(f, l, ["."], [l], memo) do
     print(f)
-    1
+    {1, memo}
   end
 
-  defp put_in_memo(value, l, springs, checks, pid) do
-    Agent.update(pid, fn memo ->
-      Map.put(memo, {l, springs, checks}, value)
-    end)
-
-    # Map.put(memo, {l, springs, checks}, value)
-    value
+  defp put_in_memo({value, memo}, l, springs, checks) do
+    memo = Map.put(memo, {l, springs, checks}, value)
+    {value, memo}
   end
 
   defp print(springs) do
     # springs |> Enum.reverse() |> Enum.join() |> IO.puts()
   end
 
-  defp do_walk(_f, l, _, [c | _], _memo) when l > c, do: 0
-  defp do_walk(_f, l, [], [c | nil], _memo) when l < c, do: 0
-  defp do_walk(_f, l, [], [c | _], _memo), do: 0
-  defp do_walk(_f, 0, [], [_ | _], _memo), do: 0
+  defp do_walk(_f, l, _, [c | _], memo) when l > c, do: {0, memo}
+  defp do_walk(_f, l, [], [c | nil], memo) when l < c, do: {0, memo}
+  defp do_walk(_f, l, [], [c | _], memo), do: {0, memo}
+  defp do_walk(_f, 0, [], [_ | _], memo), do: {0, memo}
 
   defp do_walk(f, 0 = l, ["." | r_springs] = springs, checks, memo),
-    do: walk(["." | f], 0, r_springs, checks, memo) |> put_in_memo(l, springs, checks, memo)
+    do: walk(["." | f], 0, r_springs, checks, memo) |> put_in_memo(l, springs, checks)
 
-  defp do_walk(_f, l, ["." | _], [c | _], memo) when l < c, do: 0
+  defp do_walk(_f, l, ["." | _], [c | _], memo) when l < c, do: {0, memo}
 
   defp do_walk(f, l, ["." | r_springs] = springs, [c | r_checks] = checks, memo)
        when l == c,
-       do: walk(["." | f], 0, r_springs, r_checks, memo) |> put_in_memo(l, springs, checks, memo)
+       do: walk(["." | f], 0, r_springs, r_checks, memo) |> put_in_memo(l, springs, checks)
 
   defp do_walk(f, l, ["?" | r_springs] = springs, [c | r_checks] = checks, memo)
        when l == c,
-       do: walk(["." | f], 0, r_springs, r_checks, memo) |> put_in_memo(l, springs, checks, memo)
+       do: walk(["." | f], 0, r_springs, r_checks, memo) |> put_in_memo(l, springs, checks)
 
-  defp do_walk(f, 0 = l, ["?" | r_springs] = springs, checks, memo),
-    do:
-      (walk(["#" | f], 1, r_springs, checks, memo)
-       |> put_in_memo(l, springs, checks, memo)) +
-        (walk(["." | f], 0, r_springs, checks, memo)
-         |> put_in_memo(l, springs, checks, memo))
+  defp do_walk(f, 0 = l, ["?" | r_springs] = springs, checks, memo) do
+    {res, memo} = walk(["#" | f], 1, r_springs, checks, memo)
+
+    {res2, memo} = walk(["." | f], 0, r_springs, checks, memo)
+    put_in_memo({res + res2, memo}, l, springs, checks)
+  end
 
   defp do_walk(f, l, ["?" | r_springs] = springs, checks, memo),
-    do: walk(["#" | f], l + 1, r_springs, checks, memo) |> put_in_memo(l, springs, checks, memo)
+    do: walk(["#" | f], l + 1, r_springs, checks, memo) |> put_in_memo(l, springs, checks)
 
   defp do_walk(f, l, ["#" | r_springs] = springs, checks, memo),
-    do: walk(["#" | f], l + 1, r_springs, checks, memo) |> put_in_memo(l, springs, checks, memo)
+    do: walk(["#" | f], l + 1, r_springs, checks, memo) |> put_in_memo(l, springs, checks)
 
   defp parse_data(input) do
     input
