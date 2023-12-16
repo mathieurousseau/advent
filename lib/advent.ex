@@ -14,9 +14,9 @@ defmodule Advent do
   end
 
   def print do
-    # IO.puts(DateTime.utc_now())
+    IO.puts(DateTime.utc_now())
     run("lib/inputs/") |> IO.inspect()
-    # IO.puts(DateTime.utc_now())
+    IO.puts(DateTime.utc_now())
 
     IO.puts("\n\n---- TEST DATA ----\n\n")
   end

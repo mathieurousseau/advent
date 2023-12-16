@@ -21,12 +21,11 @@ defmodule Day16 do
     # map_size(energized)
 
     entry_points(input)
-    |> dbg
-    |> Enum.map(fn {i, j, direction} ->
+    |> Task.async_stream(fn {i, j, direction} ->
       {energized, _visited} = walk(parsed_data, {i, j}, direction, {%{}, %{}})
       map_size(energized)
     end)
-    |> Enum.max()
+    |> Enum.reduce(0, fn {:ok, num}, max -> max(max, num) end)
   end
 
   defp entry_points(input) do
