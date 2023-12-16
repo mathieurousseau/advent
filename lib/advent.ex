@@ -1,7 +1,7 @@
 defmodule Advent do
-  @current_day "12"
+  @current_day "16"
   def run(path) do
-    day = day_mod = ("Elixir.Day" <> @current_day) |> String.to_atom()
+    day_mod = ("Elixir.Day" <> @current_day) |> String.to_atom()
 
     if File.exists?("#{path}/day_#{@current_day}_1.txt") do
       input_1 = File.read!("#{path}/day#{@current_day}_1.txt")
@@ -14,9 +14,9 @@ defmodule Advent do
   end
 
   def print do
-    IO.puts(DateTime.utc_now())
+    # IO.puts(DateTime.utc_now())
     run("lib/inputs/") |> IO.inspect()
-    IO.puts(DateTime.utc_now())
+    # IO.puts(DateTime.utc_now())
 
     IO.puts("\n\n---- TEST DATA ----\n\n")
   end
