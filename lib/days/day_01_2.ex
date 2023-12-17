@@ -1,38 +1,10 @@
-defmodule Day01 do
-  @expected {142, 364}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day01Two do
+  @expected 281
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
-    input
-    |> String.split("\n")
-    |> Enum.reduce(0, fn line, acc ->
-      extract_fist_and_last_digits(line) + acc
-    end)
-  end
-
-  defp extract_fist_and_last_digits(line) do
-    digits = Regex.replace(~r/[[:alpha:]]/, line, "", global: true)
-    digits_length = String.length(digits)
-
-    cond do
-      digits_length == 0 ->
-        0
-
-      digits_length == 1 ->
-        String.to_integer(digits <> digits)
-
-      true ->
-        (String.at(digits, 0) <> String.at(digits, digits_length - 1)) |> String.to_integer()
-    end
-  end
-
-  defp second(input) do
+  defp do_run(input) do
     input
     |> String.split("\n")
     |> Enum.reduce(0, fn line, acc ->

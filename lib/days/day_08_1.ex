@@ -1,17 +1,11 @@
-defmodule Day08 do
-  @expected {6, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day08One do
+  @expected 6
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
-    {lr, map} =
-      parse_data(input)
-      |> dbg
+  defp do_run(input) do
+    {lr, map} = parse_data(input)
 
     walk(lr, "AAA", lr, map, 0)
   end
@@ -22,13 +16,13 @@ defmodule Day08 do
 
   defp walk(lr, current, [l_or_r], map, count) do
     # Process.sleep(1000)
-    [current, " - ", l_or_r] |> Enum.join() |> IO.inspect()
+    [current, " - ", l_or_r] |> Enum.join()
     walk(lr, Map.get(map, {current, l_or_r}), lr, map, count + 1)
   end
 
   defp walk(lr, current, [next | rest], map, count) do
     # Process.sleep(1000)
-    [current, " - ", next] |> Enum.join() |> IO.inspect()
+    [current, " - ", next] |> Enum.join()
     walk(lr, Map.get(map, {current, next}), rest, map, count + 1)
   end
 
@@ -59,8 +53,5 @@ defmodule Day08 do
       end)
 
     {lr, map}
-  end
-
-  defp second(_input) do
   end
 end

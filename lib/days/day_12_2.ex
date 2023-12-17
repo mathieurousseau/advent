@@ -1,14 +1,10 @@
-defmodule Day12 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day12Two do
+  @expected 525_152
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     # Agent.get(:memoization, fn value -> IO.puts("mathieu #{inspect(value)}") end)
 
     parse_data(input)
@@ -21,7 +17,7 @@ defmodule Day12 do
     springs = String.graphemes(springs)
     # 0..last_idx |> Enum.reduce(&waklk(&1))
     # |> Enum.sum()
-    {result, memo} = walk([], 0, springs, checks, %{})
+    {result, _memo} = walk([], 0, springs, checks, %{})
     # Agent.stop(pid)
     result
   end
@@ -43,15 +39,6 @@ defmodule Day12 do
     end
   end
 
-  defp walk(f, l, springs, checks, memo) do
-    if length(springs) < length(checks) - 1 + Enum.sum(checks) - l do
-      {0, put_in_memo({0, memo}, l, springs, checks)}
-    else
-      {res, memo} = do_walk(f, 0, springs, checks, memo)
-      put_in_memo(l, springs, checks, memo)
-    end
-  end
-
   defp do_walk(_f, _, springs, [], memo) do
     if "#" in springs do
       {0, memo}
@@ -62,33 +49,21 @@ defmodule Day12 do
 
   defp do_walk(_f, l, _, [c | _], memo) when l > c, do: {0, memo}
 
-  defp do_walk(f, l, [], [l], memo) do
-    print(f)
+  defp do_walk(_f, l, [], [l], memo) do
     {1, memo}
   end
 
-  defp do_walk(f, l, [], [], memo) do
-    print(f)
+  defp do_walk(_f, _l, [], [], memo) do
     {1, memo}
   end
 
-  defp do_walk(f, l, ["."], [l], memo) do
-    print(f)
+  defp do_walk(_f, l, ["."], [l], memo) do
     {1, memo}
-  end
-
-  defp put_in_memo({value, memo}, l, springs, checks) do
-    memo = Map.put(memo, {l, springs, checks}, value)
-    {value, memo}
-  end
-
-  defp print(springs) do
-    # springs |> Enum.reverse() |> Enum.join() |> IO.puts()
   end
 
   defp do_walk(_f, l, _, [c | _], memo) when l > c, do: {0, memo}
   defp do_walk(_f, l, [], [c | nil], memo) when l < c, do: {0, memo}
-  defp do_walk(_f, l, [], [c | _], memo), do: {0, memo}
+  defp do_walk(_f, _l, [], [_c | _], memo), do: {0, memo}
   defp do_walk(_f, 0, [], [_ | _], memo), do: {0, memo}
 
   defp do_walk(f, 0 = l, ["." | r_springs] = springs, checks, memo),
@@ -117,6 +92,11 @@ defmodule Day12 do
   defp do_walk(f, l, ["#" | r_springs] = springs, checks, memo),
     do: walk(["#" | f], l + 1, r_springs, checks, memo) |> put_in_memo(l, springs, checks)
 
+  defp put_in_memo({value, memo}, l, springs, checks) do
+    memo = Map.put(memo, {l, springs, checks}, value)
+    {value, memo}
+  end
+
   defp parse_data(input) do
     input
     |> String.split("\n")
@@ -133,8 +113,5 @@ defmodule Day12 do
       [{springs, checks} | acc]
     end)
     |> Enum.reverse()
-  end
-
-  defp second(_input) do
   end
 end

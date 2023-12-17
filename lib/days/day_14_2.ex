@@ -1,46 +1,14 @@
-defmodule Day14 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day14Two do
+  @expected 64
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  @doc """
-
-  .....#....
-  ....#...O#
-  .....##...
-  ..O#......
-  .....OOO#.
-  .O#...O#.#
-  ....O#....
-  ......OOOO
-  #...O###.O
-  #.OOO#...O
-
-  .....#....
-  ....#...O#
-  .....##...
-  ..O#......
-  .....OOO#.
-  .O#...O#.#
-  ....O#....
-  ......OOOO
-  #...O###.O
-  #.OOO#...O
-
-
-
-  """
-
-  defp first(input) do
+  defp do_run(input) do
     parse_input(input)
     # |> transpose()
     # |> Enum.map(&Enum.reverse(&1))
-    |> print()
+    # |> print()
     # |> rotate()
     # |> rotate()
     # |> rotate()
@@ -48,7 +16,7 @@ defmodule Day14 do
     # |> rotate_left()
     # |> print()
     |> cycle(1_000_000_000)
-    |> print()
+    # |> print()
     # |> print()
     # |> transpose()
     # |> transpose()
@@ -70,13 +38,13 @@ defmodule Day14 do
     {result, _} =
       1..times
       |> Enum.reduce_while({data, %{}}, fn i, {data, memo} ->
-        IO.puts("#{i}:#{map_size(memo)}")
+        # IO.puts("#{i}:#{map_size(memo)}")
         key = Enum.map(data, &Enum.join(&1)) |> Enum.join("\n")
 
         if not force and Map.get(memo, key) do
           from_idx = Map.get(memo, key)
           remaining = rem(times - i, i - from_idx)
-          IO.puts("#{from_idx} -> #{i} : #{remaining}")
+          # IO.puts("#{from_idx} -> #{i} : #{remaining}")
           final = cycle(data, remaining + 1, true)
           {:halt, {final, memo}}
         else
@@ -107,17 +75,11 @@ defmodule Day14 do
     result
   end
 
-  defp print({data, memo}) do
-    data |> Enum.map(&Enum.join(&1)) |> Enum.each(&IO.puts(&1))
-    IO.puts("\n")
-    data
-  end
-
-  defp print(data) do
-    data |> Enum.map(&Enum.join(&1)) |> Enum.each(&IO.puts(&1))
-    IO.puts("\n")
-    data
-  end
+  # defp print(data) do
+  #   data |> Enum.map(&Enum.join(&1)) |> Enum.each(&IO.puts(&1))
+  #   IO.puts("\n")
+  #   data
+  # end
 
   defp parse_input(input) do
     input
@@ -149,8 +111,8 @@ defmodule Day14 do
       end)
     end)
     |> Enum.map(& &1)
-    |> Enum.sort(fn {k, v}, {k2, v2} -> k < k2 end)
-    |> Enum.map(fn {k, v} -> v end)
+    |> Enum.sort(fn {k, _v}, {k2, _v2} -> k < k2 end)
+    |> Enum.map(fn {_k, v} -> v end)
     |> Enum.map(&Enum.reverse(&1))
 
     # |> Enum.map(&Enum.join(&1))
@@ -176,8 +138,8 @@ defmodule Day14 do
       end)
     end)
     |> Enum.map(& &1)
-    |> Enum.sort(fn {k, v}, {k2, v2} -> k < k2 end)
-    |> Enum.map(fn {k, v} -> v end)
+    |> Enum.sort(fn {k, _v}, {k2, _v2} -> k < k2 end)
+    |> Enum.map(fn {_k, v} -> v end)
     |> Enum.map(&Enum.reverse(&1))
 
     # |> Enum.map(&Enum.join(&1))
@@ -210,8 +172,5 @@ defmodule Day14 do
         acc
       end
     end)
-  end
-
-  defp second(_input) do
   end
 end

@@ -1,14 +1,10 @@
-defmodule Day13PartOne do
-  @expected {405, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day13One do
+  @expected 405
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     String.split(input, "\n\n", trim: true)
     |> Enum.chunk_every(2)
     # |> dbg
@@ -30,7 +26,7 @@ defmodule Day13PartOne do
     # l = length(lines)
 
     if transpose do
-      Day11.transpose(lines)
+      Day11Two.transpose(lines)
     else
       lines
     end
@@ -56,7 +52,7 @@ defmodule Day13PartOne do
 
   defp do_walk(_, top, bottom, idx) when top == bottom, do: idx
 
-  defp do_walk([], [top], [bottom], idx) when top != bottom, do: 0
+  defp do_walk([], [top], [bottom], _idx) when top != bottom, do: 0
 
   defp do_walk([first | [second | rest]], top, [f_bottom | rest_bottom], idx),
     do: walk(rest, top ++ [f_bottom], rest_bottom ++ [first, second], idx + 1)
@@ -69,7 +65,4 @@ defmodule Day13PartOne do
 
   defp do_walk([], [_, _], [f_bottom | [_ | _] = rest_bottom], idx),
     do: walk([], [f_bottom], rest_bottom, idx + 1)
-
-  defp(second(_input)) do
-  end
 end

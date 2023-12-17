@@ -1,15 +1,10 @@
-defmodule Day15 do
-  alias Hex.API.Key
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day15One do
+  @expected 1320
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     input |> String.split(",") |> Enum.map(&transform(&1)) |> Enum.sum()
   end
 
@@ -19,8 +14,5 @@ defmodule Day15 do
     |> Enum.reduce(0, fn c, acc ->
       c |> Kernel.+(acc) |> Kernel.*(17) |> rem(256)
     end)
-  end
-
-  defp second(_input) do
   end
 end

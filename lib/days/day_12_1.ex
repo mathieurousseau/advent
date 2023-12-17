@@ -1,22 +1,15 @@
-defmodule Day12 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day12One do
+  @expected 21
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     parse_data(input) |> Enum.map(&process_line(&1)) |> Enum.sum()
   end
 
   defp process_line({springs, checks}) do
     springs = String.graphemes(springs)
-    last_idx = length(checks) - 1
-    # 0..last_idx |> Enum.reduce(&waklk(&1))
-    # |> Enum.sum()
     walk([], 0, springs, checks)
   end
 
@@ -39,28 +32,15 @@ defmodule Day12 do
 
   defp do_walk(_f, l, _, [c | _]) when l > c, do: 0
 
-  defp do_walk(f, l, [], [l]) do
-    print(f)
-    1
-  end
+  defp do_walk(_f, l, [], [l]), do: 1
 
-  defp do_walk(f, l, [], []) do
-    print(f)
-    1
-  end
+  defp do_walk(_f, _l, [], []), do: 1
 
-  defp do_walk(f, l, ["."], [l]) do
-    print(f)
-    1
-  end
-
-  defp print(springs) do
-    springs |> Enum.reverse() |> Enum.join() |> IO.puts()
-  end
+  defp do_walk(_f, l, ["."], [l]), do: 1
 
   defp do_walk(_f, l, _, [c | _]) when l > c, do: 0
   defp do_walk(_f, l, [], [c | nil]) when l < c, do: 0
-  defp do_walk(_f, l, [], [c | _]), do: 0
+  defp do_walk(_f, _l, [], [_c | _]), do: 0
   defp do_walk(_f, 0, [], [_ | _]), do: 0
   defp do_walk(f, 0, ["." | r_springs], checks), do: walk(["." | f], 0, r_springs, checks)
 
@@ -89,8 +69,5 @@ defmodule Day12 do
       [{springs, checks} | acc]
     end)
     |> Enum.reverse()
-  end
-
-  defp second(_input) do
   end
 end

@@ -1,24 +1,11 @@
-defmodule Day16 do
-  @expected {46, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day16One do
+  @expected 46
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
-    #
+  defp do_run(input) do
     parsed_data = parse_data(input)
-
-    #   {energized, _visited} =walk(parsed_data, {0, 0}, :right, {%{{0, 0} => 1}, %{{{0, 0}, :right} => 1}})
-
-    #   |> walk({0, 0}, :right, {%{}, %{}})
-
-    # # |> dbg
-
-    # map_size(energized)
 
     entry_points(input)
     |> Task.async_stream(fn {i, j, direction} ->
@@ -28,22 +15,8 @@ defmodule Day16 do
     |> Enum.reduce(0, fn {:ok, num}, max -> max(max, num) end)
   end
 
-  defp entry_points(input) do
-    lines = String.split(input, "\n")
-    h = length(lines) - 1
-    w = lines |> hd |> String.graphemes() |> length()
-    w = w - 1
-
-    0..h
-    |> Enum.reduce([], fn i, acc ->
-      0..w
-      |> Enum.reduce(acc, fn j, acc ->
-        acc = if i == 0, do: [{i, j, :down} | acc], else: acc
-        acc = if j == 0, do: [{i, j, :right} | acc], else: acc
-        acc = if i == h, do: [{i, j, :up} | acc], else: acc
-        if j == w, do: [{i, j, :left} | acc], else: acc
-      end)
-    end)
+  defp entry_points(_input) do
+    [{0, 0, :right}]
   end
 
   defp walk(map, point, direction, {_energized, visited} = memo) do
@@ -166,8 +139,5 @@ defmodule Day16 do
         Map.put(map, {i, j}, c)
       end)
     end)
-  end
-
-  defp second(_input) do
   end
 end

@@ -1,14 +1,10 @@
-defmodule Day09 do
-  @expected {2, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day09Two do
+  @expected 2
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     parse_data(input) |> Enum.map(&process(&1)) |> Enum.sum()
   end
 
@@ -34,8 +30,5 @@ defmodule Day09 do
     |> Enum.map(fn line ->
       String.split(line, " ", trim: true) |> Enum.map(&String.to_integer(&1)) |> Enum.reverse()
     end)
-  end
-
-  defp second(_input) do
   end
 end

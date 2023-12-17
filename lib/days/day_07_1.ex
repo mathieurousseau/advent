@@ -1,26 +1,20 @@
-defmodule Day07 do
-  @expected {6440, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day07One do
+  @expected 6440
+  def run(input) do
+    {do_run(input), @expected}
   end
 
   @card_order Stream.zip(~w(A K Q T 9 8 7 6 5 4 3 2 J), 14..1) |> Enum.into(%{})
 
-  defp(first(input)) do
+  defp do_run(input) do
     list = parse_data(input)
 
-    fs =
-      Enum.map(list, fn {hand, _} ->
-        hand
-      end)
-      |> Enum.frequencies()
-      |> Map.values()
-      |> Enum.uniq()
-      |> IO.inspect(label: "frequencies")
+    Enum.map(list, fn {hand, _} ->
+      hand
+    end)
+    |> Enum.frequencies()
+    |> Map.values()
+    |> Enum.uniq()
 
     Enum.sort(list, fn {hand_1, _}, {hand_2, _} ->
       g1 =
@@ -70,8 +64,7 @@ defmodule Day07 do
         m_2 = String.graphemes(hand_2)
 
         Enum.zip(m_1, m_2)
-        |> dbg
-        |> Enum.reduce_while(true, fn {c_1, c_2}, acc ->
+        |> Enum.reduce_while(true, fn {c_1, c_2}, _acc ->
           if Map.get(@card_order, c_1) == Map.get(@card_order, c_2) do
             {:cont, true}
           else
@@ -92,11 +85,9 @@ defmodule Day07 do
           Map.get(@card_order, c1) > Map.get(@card_order, c2)
         end)
         |> Enum.join()
-        |> IO.inspect(label: "mathieu")
       end)
     end)
     |> Enum.with_index()
-    |> dbg
     |> Enum.reduce(0, fn {{_, bet}, idx}, acc ->
       acc + (idx + 1) * bet
     end)
@@ -123,8 +114,5 @@ defmodule Day07 do
       [hand, bet] = String.split(line, " ")
       {hand, String.to_integer(bet)}
     end)
-  end
-
-  defp second(_input) do
   end
 end

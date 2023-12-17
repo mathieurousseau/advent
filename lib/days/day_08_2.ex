@@ -1,42 +1,29 @@
-defmodule Day08 do
-  @expected {6, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day08Two do
+  @expected 6
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     {starting_points, lr, map} = parse_data(input)
 
-    Enum.map(starting_points, &(walk(lr, [&1], lr, map, 0) |> IO.inspect())) |> lcm()
-
-    s = NaiveDateTime.utc_now()
-    NaiveDateTime.diff(NaiveDateTime.utc_now(), s, :second) |> IO.inspect(label: "took:")
-    IO.inspect(s)
-    walk(lr, starting_points, lr, map, 0) |> IO.inspect(label: "result")
-    IO.inspect(NaiveDateTime.utc_now())
-    NaiveDateTime.diff(NaiveDateTime.utc_now(), s, :second) |> IO.inspect(label: "took:")
+    Enum.map(starting_points, &walk(lr, [&1], lr, map, 0)) |> lcm()
   end
 
-  def gcd(a, 0), do: a
-  def gcd(0, b), do: b
-  def gcd(a, b), do: gcd(b, rem(a, b))
+  defp gcd(a, 0), do: a
+  defp gcd(0, b), do: b
+  defp gcd(a, b), do: gcd(b, rem(a, b))
 
-  def lcm(0, 0), do: 0
-  def lcm(a, b) when is_number(a) and is_number(b), do: div(a * b, gcd(a, b))
+  defp lcm(0, 0), do: 0
+  defp lcm(a, b) when is_number(a) and is_number(b), do: div(a * b, gcd(a, b))
 
-  def lcm([a, b]) do
+  defp lcm([a, b]) do
     lcm(a, b)
   end
 
-  def lcm([a | b]) do
+  defp lcm([a | b]) do
     lcm(a, lcm(b))
   end
-
-  defp walk(_, nil, _, _, _count), do: raise("nil")
 
   defp walk(lr, current, path, map, count) do
     # Process.sleep(1000)
@@ -112,8 +99,5 @@ defmodule Day08 do
       end)
 
     {starting_points, lr, map}
-  end
-
-  defp second(_input) do
   end
 end

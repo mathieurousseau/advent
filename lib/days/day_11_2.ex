@@ -1,14 +1,10 @@
-defmodule Day11 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day11Two do
+  @expected 82_000_210
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     lines = String.split(input, "\n")
     # lines |> transpose() |> Enum.each(&IO.puts(&1))
 
@@ -124,39 +120,36 @@ defmodule Day11 do
       end)
     end)
     |> Enum.map(& &1)
-    |> Enum.sort(fn {k, v}, {k2, v2} -> k < k2 end)
-    |> Enum.map(fn {k, v} -> v end)
+    |> Enum.sort(fn {k, _v}, {k2, _v2} -> k < k2 end)
+    |> Enum.map(fn {_k, v} -> v end)
     |> Enum.map(&Enum.reverse(&1))
     |> Enum.map(&Enum.join(&1))
 
     # |> Enum.reverse()
   end
 
-  def transpose(lines) do
-    lines
-    |> Enum.reduce(%{}, fn line, acc ->
-      line
-      |> String.graphemes()
-      |> Enum.with_index()
-      |> Enum.reduce(acc, fn {c, idx}, acc ->
-        {_, acc} =
-          Map.get_and_update(acc, idx, fn
-            nil -> {nil, [c]}
-            current -> {current, [c | current]}
-          end)
+  # def transpose(lines) do
+  #   lines
+  #   |> Enum.reduce(%{}, fn line, acc ->
+  #     line
+  #     |> String.graphemes()
+  #     |> Enum.with_index()
+  #     |> Enum.reduce(acc, fn {c, idx}, acc ->
+  #       {_, acc} =
+  #         Map.get_and_update(acc, idx, fn
+  #           nil -> {nil, [c]}
+  #           current -> {current, [c | current]}
+  #         end)
 
-        acc
-      end)
-    end)
-    |> Enum.map(& &1)
-    |> Enum.sort(fn {k, v}, {k2, v2} -> k < k2 end)
-    |> Enum.map(fn {k, v} -> v end)
-    |> Enum.map(&Enum.reverse(&1))
-    |> Enum.map(&Enum.join(&1))
+  #       acc
+  #     end)
+  #   end)
+  #   |> Enum.map(& &1)
+  #   |> Enum.sort(fn {k, _v}, {k2, _v2} -> k < k2 end)
+  #   |> Enum.map(fn {_k, v} -> v end)
+  #   |> Enum.map(&Enum.reverse(&1))
+  #   |> Enum.map(&Enum.join(&1))
 
-    # |> Enum.reverse()
-  end
-
-  defp second(_input) do
-  end
+  #   # |> Enum.reverse()
+  # end
 end

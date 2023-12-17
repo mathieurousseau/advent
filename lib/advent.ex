@@ -1,23 +1,18 @@
 defmodule Advent do
-  @current_day "16"
-  def run(path) do
-    day_mod = ("Elixir.Day" <> @current_day) |> String.to_atom()
+  def run(path, day, part) do
+    day_mod = ("Elixir.Day" <> day <> part) |> String.to_atom()
 
-    if File.exists?("#{path}/day_#{@current_day}_1.txt") do
-      input_1 = File.read!("#{path}/day#{@current_day}_1.txt")
-      input_2 = File.read!("#{path}/day#{@current_day}_2.txt")
-      day_mod.run(input_1, input_2)
+    if File.exists?("#{path}/day#{day}_1.txt") do
+      input_1 = File.read!("#{path}/day#{day}_1.txt")
+      input_2 = File.read!("#{path}/day#{day}_2.txt")
+
+      case part do
+        "One" -> day_mod.run(input_1)
+        "Two" -> day_mod.run(input_2)
+      end
     else
-      input = File.read!("#{path}/day#{@current_day}.txt")
-      day_mod.run(input, input)
+      input = File.read!("#{path}/day#{day}.txt")
+      day_mod.run(input)
     end
-  end
-
-  def print do
-    IO.puts(DateTime.utc_now())
-    run("lib/inputs/") |> IO.inspect()
-    IO.puts(DateTime.utc_now())
-
-    IO.puts("\n\n---- TEST DATA ----\n\n")
   end
 end

@@ -1,14 +1,10 @@
-defmodule Day10 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day10Two do
+  @expected 10
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     # start = {22, 92}
     map = parse(input)
     start = Map.get(map, "start")
@@ -34,11 +30,11 @@ defmodule Day10 do
           raise("not a good start: #{inspect(start)}")
       end
 
-    Map.get(map, start) |> dbg
+    Map.get(map, start)
 
     map = walk(start, from, start, MapSet.new(), map, 0)
-    [from_left, from_up] = find_direction(map) |> dbg
-    Map.get(map, start) |> dbg
+    [from_left, from_up] = find_direction(map)
+    Map.get(map, start)
     # dbg()
     h_tiles = find_tiles_from_left(map, from_left)
     v_tiles = find_tiles_from_top(map, from_up)
@@ -65,7 +61,7 @@ defmodule Day10 do
   # end
 
   defp find_tiles_from_left(%{r_l: r_l, c_l: c_l} = map, inside_toggler) do
-    IO.inspect(inside_toggler)
+    # IO.inspect(inside_toggler)
 
     0..r_l
     |> Enum.reduce(MapSet.new(), fn r, tiles ->
@@ -74,8 +70,6 @@ defmodule Day10 do
         |> Enum.reduce({tiles, 0}, fn c, {tiles, inside} ->
           case Map.get(map, {r, c}) do
             [_ | _] = direction ->
-              # IO.puts("#{r},#{c} - #{inspect(direction)}")
-
               inside =
                 if inside_toggler in direction do
                   1
@@ -85,9 +79,7 @@ defmodule Day10 do
 
               {tiles, inside}
 
-            direction ->
-              # IO.puts("#{r},#{c} - #{inspect(direction)} - #{inside}")
-
+            _direction ->
               if inside == 1 do
                 {MapSet.put(tiles, {r, c}), inside}
               else
@@ -101,7 +93,7 @@ defmodule Day10 do
   end
 
   defp find_tiles_from_top(%{r_l: r_l, c_l: c_l} = map, inside_toggler) do
-    IO.inspect(inside_toggler)
+    # IO.inspect(inside_toggler)
 
     0..c_l
     |> Enum.reduce(MapSet.new(), fn c, tiles ->
@@ -110,8 +102,6 @@ defmodule Day10 do
         |> Enum.reduce({tiles, 0}, fn r, {tiles, inside} ->
           case Map.get(map, {r, c}) do
             [_ | _] = direction ->
-              # IO.puts("#{r},#{c} - #{inspect(direction)}")
-
               inside =
                 if inside_toggler in direction do
                   1
@@ -121,9 +111,7 @@ defmodule Day10 do
 
               {tiles, inside}
 
-            direction ->
-              # IO.puts("#{r},#{c} - #{inspect(direction)} - #{inside}")
-
+            _direction ->
               if inside == 1 do
                 {MapSet.put(tiles, {r, c}), inside}
               else
@@ -153,7 +141,6 @@ defmodule Day10 do
                   else
                     [:d, :l]
                   end
-                  |> dbg
                 else
                   inside_togglers
                 end
@@ -248,8 +235,5 @@ defmodule Day10 do
         |> Map.put({row, col}, c)
       end)
     end)
-  end
-
-  defp second(_input) do
   end
 end

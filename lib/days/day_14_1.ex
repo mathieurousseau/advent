@@ -1,29 +1,10 @@
-defmodule Day14 do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day14One do
+  @expected 136
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  @doc """
-
-  OOOO.#.O..
-  OO..#....#
-  OO..O##..O
-  O..#.OO...
-  ........#.
-  ..#....#.#
-  ..O..#.O.O
-  ..O.......
-  #....###..
-  #....#....
-
-  """
-
-  defp first(input) do
+  defp do_run(input) do
     parse_input(input)
     |> Enum.map(&Enum.reverse(&1))
     |> Enum.map(&tilt(&1))
@@ -62,8 +43,8 @@ defmodule Day14 do
       end)
     end)
     |> Enum.map(& &1)
-    |> Enum.sort(fn {k, v}, {k2, v2} -> k < k2 end)
-    |> Enum.map(fn {k, v} -> v end)
+    |> Enum.sort(fn {k, _v}, {k2, _v2} -> k < k2 end)
+    |> Enum.map(fn {_k, v} -> v end)
     |> Enum.map(&Enum.reverse(&1))
 
     # |> Enum.map(&Enum.join(&1))
@@ -96,8 +77,5 @@ defmodule Day14 do
         acc
       end
     end)
-  end
-
-  defp second(_input) do
   end
 end

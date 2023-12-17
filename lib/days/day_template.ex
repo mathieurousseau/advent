@@ -1,16 +1,13 @@
-defmodule DayXX do
-  @expected {"TBD", "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule DayXXOne do
+  @expected nil
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(_input) do
+  defp do_run(input) do
+    parse(input)
   end
 
-  defp second(_input) do
+  defp parse(_input) do
   end
 end

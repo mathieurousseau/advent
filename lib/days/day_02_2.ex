@@ -1,41 +1,12 @@
-defmodule Day02 do
-  @expected {8, 2286}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day02Two do
+  @expected 2286
+  def run(input) do
+    {do_run(input), @expected}
   end
 
   @available_cubes %{"red" => 12, "green" => 13, "blue" => 14}
-  defp first(input) do
-    String.split(input, "\n")
-    |> Enum.reduce(0, fn line, acc ->
-      process_game(line) + acc
-    end)
-  end
 
-  defp process_game(line) do
-    ["Game " <> id, hands] = String.split(line, ":")
-
-    if hands |> String.split(";", trim: true) |> Enum.all?(&valid_hands(&1)) do
-      String.to_integer(id)
-    else
-      0
-    end
-  end
-
-  defp valid_hands(hand) do
-    hand
-    |> String.split(",", trim: true)
-    |> Enum.all?(fn cubes ->
-      [number, color] = String.split(cubes, " ", trim: true)
-      @available_cubes[color] >= String.to_integer(number)
-    end)
-  end
-
-  defp second(input) do
+  defp do_run(input) do
     lines = String.split(input, "\n", trim: true)
 
     games_hands =

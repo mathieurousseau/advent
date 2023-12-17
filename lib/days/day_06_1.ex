@@ -1,14 +1,10 @@
-defmodule Day06 do
-  @expected {288, 71503}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day06One do
+  @expected 288
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     map = parse_data(input)
     length = div(map_size(map), 2)
 
@@ -38,22 +34,6 @@ defmodule Day06 do
       |> Enum.reduce(map, fn {num, index}, map ->
         Map.put(map, "#{key}_#{index}", num)
       end)
-    end)
-  end
-
-  defp second(input) do
-    map = parse_data_2(input)
-
-    Enum.map(0..0, &process_race(&1, map))
-    |> Enum.product()
-  end
-
-  defp parse_data_2(input) do
-    String.split(input, "\n")
-    |> Enum.reduce(%{}, fn line, map ->
-      [key, value] = String.split(line, ":", trim: true)
-      value = String.replace(value, ~r/\s/, "") |> String.to_integer()
-      Map.put(map, "#{key}_#{0}", value)
     end)
   end
 end

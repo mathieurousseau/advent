@@ -1,23 +1,29 @@
-defmodule Day05 do
-  @expected {35, 46}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day05Two do
+  @expected 46
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     [seeds, steps] = String.split(input, "\n\n", parts: 2)
     "seeds: " <> seeds = seeds
-    seeds = String.split(seeds, " ") |> Enum.map(&String.to_integer(&1))
+
+    seeds_ranges =
+      String.split(seeds, " ")
+      |> Enum.map(&String.to_integer(&1))
+      |> Enum.chunk_every(2)
+      |> Enum.sort(fn [from_1, _], [from_2, _] -> from_1 < from_2 end)
+      |> Enum.map(fn [start, length] ->
+        start..(start + length - 1)
+      end)
+      |> List.flatten()
+
+    reversed_steps = get_steps_second(steps) |> Enum.reverse()
+
+    seed = walk_the_steps_from_bottom(0..9_999_999_999, reversed_steps, seeds_ranges)
 
     steps = get_steps_first(steps)
-
-    Enum.reduce(seeds, 999_999_999_999_999_999_999, fn seed, lowest ->
-      min(lowest, walk_the_steps(seed, steps))
-    end)
+    walk_the_steps(seed, steps)
   end
 
   defp walk_the_steps(seed, steps) do
@@ -76,28 +82,6 @@ defmodule Day05 do
 
     [{(to_range.last + 1)..9_999_999_999, (to_range.last + 1)..9_999_999_999} | ranges]
     |> Enum.reverse()
-  end
-
-  defp second(input) do
-    [seeds, steps] = String.split(input, "\n\n", parts: 2)
-    "seeds: " <> seeds = seeds
-
-    seeds_ranges =
-      String.split(seeds, " ")
-      |> Enum.map(&String.to_integer(&1))
-      |> Enum.chunk_every(2)
-      |> Enum.sort(fn [from_1, _], [from_2, _] -> from_1 < from_2 end)
-      |> Enum.map(fn [start, length] ->
-        start..(start + length - 1)
-      end)
-      |> List.flatten()
-
-    reversed_steps = get_steps_second(steps) |> Enum.reverse()
-
-    seed = walk_the_steps_from_bottom(0..9_999_999_999, reversed_steps, seeds_ranges)
-
-    steps = get_steps_first(steps)
-    walk_the_steps(seed, steps)
   end
 
   defp walk_the_steps_from_bottom(current_range, [], seeds_ranges) do

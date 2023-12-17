@@ -1,14 +1,10 @@
-defmodule Day13 do
-  @expected {405, "TBD"}
-  def run(input_1, input_2) do
-    output_1 = first(input_1)
-
-    output_2 = second(input_2)
-
-    {{output_1, output_2}, @expected}
+defmodule Day13Two do
+  @expected 400
+  def run(input) do
+    {do_run(input), @expected}
   end
 
-  defp first(input) do
+  defp do_run(input) do
     input
     |> String.replace("#", "1")
     |> String.replace(".", "0")
@@ -22,62 +18,18 @@ defmodule Day13 do
   end
 
   defp process_patterns(pattern) do
-    {direction, {idx, {r, c}}} =
+    {_direction, {idx, {_r, _c}}} =
       find_line(pattern)
       |> case do
         {nil, nil} ->
           {idx, {c, r}} = find_line(pattern, true)
           {:vertical, {idx, {r, c}}}
 
-        {idx, {r, c}} = smudge ->
+        {idx, {r, c}} ->
           {:horizontal, {idx * 100, {r, c}}}
       end
 
     idx
-    # IO.puts(pattern)
-
-    # corrected =
-    #   pattern
-    #   |> String.split("\n")
-    #   |> Enum.with_index()
-    #   |> Enum.map(fn {l, idx} ->
-    #     # IO.puts("#{r}//#{c}")
-
-    #     if idx == r do
-    #       char =
-    #         case String.at(l, c) do
-    #           "1" -> "0"
-    #           "0" -> "1"
-    #         end
-
-    #       l |> String.graphemes() |> List.replace_at(c, char) |> Enum.join()
-    #       # {p1, p2} = String.split_at(l, idx)
-    #       # p1 <> c <> p2
-    #     else
-    #       l
-    #     end
-    #   end)
-    #   |> Enum.join("\n")
-
-    # IO.puts(corrected)
-
-    # case direction do
-    # :horizontal -> Day13PartOne.find_line_mirror(corrected) * 100
-    # :vertical -> Day13PartOne.find_line_mirror(corrected, true)
-    # end
-
-    # case Day13PartOne.find_line_mirror(corrected) do
-    #   0 -> Day13PartOne.find_line_mirror(corrected, true)
-    #   value -> 100 * value
-    # end
-
-    # d = Day13PartOne.find_line_mirror(corrected, true)
-
-    # if smu
-    # d = find_line(pattern, true)
-    # c * 100
-    # c * 100 + d
-    # {c * 100, d}
   end
 
   defp find_line(pattern, transpose \\ false) do
@@ -86,7 +38,7 @@ defmodule Day13 do
 
     lines =
       if transpose do
-        Day11.transpose(lines)
+        Day11Two.transpose(lines)
       else
         lines
       end
@@ -128,7 +80,7 @@ defmodule Day13 do
   # defp do_find_smudge(_, top, bottom, idx) when top == bottom, do: idx
 
   # defp do_find_smudge([], [top], [bottom], idx) when top != bottom, do: 0
-  defp do_find_smudge([], [top], [bottom], idx), do: {nil, nil}
+  defp do_find_smudge([], [_top], [_bottom], _idx), do: {nil, nil}
 
   defp do_find_smudge([first | [second | rest]], top, [f_bottom | rest_bottom], idx),
     do: find_smudge(rest, top ++ [f_bottom], rest_bottom ++ [first, second], idx + 1)
@@ -141,7 +93,4 @@ defmodule Day13 do
 
   defp do_find_smudge([], [_, _], [f_bottom | [_ | _] = rest_bottom], idx),
     do: find_smudge([], [f_bottom], rest_bottom, idx + 1)
-
-  defp(second(_input)) do
-  end
 end
