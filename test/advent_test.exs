@@ -1,10 +1,10 @@
 defmodule AdventTest do
   use ExUnit.Case
 
-  @max_days 16
+  @max_days 17
 
-  # @force_day ["11"]
-  @force_day nil
+  @force_day ["17"]
+  # @force_day nil
 
   @days @force_day ||
           1..@max_days
