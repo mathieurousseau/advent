@@ -107,7 +107,7 @@ defmodule Day10Two do
     end)
   end
 
-  defp find_tiles_from_top(map, inside_toggler, opts \\ []) do
+  defp find_tiles_from_top(map, inside_toggler, opts) do
     # IO.inspect(inside_toggler)
     start_i = Keyword.get(opts, :start_i, 0)
     start_j = Keyword.get(opts, :start_j, 0)
