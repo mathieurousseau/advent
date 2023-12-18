@@ -33,7 +33,7 @@ defmodule Day10Two do
     Map.get(map, start)
 
     map = walk(start, from, start, MapSet.new(), map, 0)
-    [from_left, from_up] = find_direction(map) |> dbg
+    [from_left, from_up] = find_direction(map)
     Map.get(map, start)
     count_inner(map, from_left, from_up)
     # dbg()
@@ -66,14 +66,14 @@ defmodule Day10Two do
 
   defp find_tiles_from_left(map, inside_toggler, opts) do
     # IO.inspect(inside_toggler)
-    start_i = Keyword.get(opts, :start_i, 0) |> dbg
-    start_j = Keyword.get(opts, :start_j, 0) |> dbg
-    r_l = Keyword.get(opts, :h, Map.get(map, :r_l)) |> dbg
-    c_l = Keyword.get(opts, :w, Map.get(map, :c_l)) |> dbg
+    start_i = Keyword.get(opts, :start_i, 0)
+    start_j = Keyword.get(opts, :start_j, 0)
+    r_l = Keyword.get(opts, :h, Map.get(map, :r_l))
+    c_l = Keyword.get(opts, :w, Map.get(map, :c_l))
 
     start_i..r_l
     |> Enum.reduce(MapSet.new(), fn r, tiles ->
-      IO.puts("#{r}")
+      # IO.puts("#{r}")
 
       {tiles, _} =
         start_j..c_l
