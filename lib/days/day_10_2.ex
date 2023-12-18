@@ -33,11 +33,15 @@ defmodule Day10Two do
     Map.get(map, start)
 
     map = walk(start, from, start, MapSet.new(), map, 0)
-    [from_left, from_up] = find_direction(map)
+    [from_left, from_up] = find_direction(map) |> dbg
     Map.get(map, start)
+    count_inner(map, from_left, from_up)
     # dbg()
-    h_tiles = find_tiles_from_left(map, from_left)
-    v_tiles = find_tiles_from_top(map, from_up)
+  end
+
+  def count_inner(map, from_left_togglers, from_top_togglers, opts \\ []) do
+    h_tiles = find_tiles_from_left(map, from_left_togglers, opts)
+    v_tiles = find_tiles_from_top(map, from_top_togglers, opts)
     MapSet.intersection(h_tiles, v_tiles) |> MapSet.size()
   end
 
@@ -60,13 +64,19 @@ defmodule Day10Two do
   #   end)
   # end
 
-  defp find_tiles_from_left(%{r_l: r_l, c_l: c_l} = map, inside_toggler) do
+  defp find_tiles_from_left(map, inside_toggler, opts) do
     # IO.inspect(inside_toggler)
+    start_i = Keyword.get(opts, :start_i, 0) |> dbg
+    start_j = Keyword.get(opts, :start_j, 0) |> dbg
+    r_l = Keyword.get(opts, :h, Map.get(map, :r_l)) |> dbg
+    c_l = Keyword.get(opts, :w, Map.get(map, :c_l)) |> dbg
 
-    0..r_l
+    start_i..r_l
     |> Enum.reduce(MapSet.new(), fn r, tiles ->
+      IO.puts("#{r}")
+
       {tiles, _} =
-        0..c_l
+        start_j..c_l
         |> Enum.reduce({tiles, 0}, fn c, {tiles, inside} ->
           case Map.get(map, {r, c}) do
             [_ | _] = direction ->
@@ -77,28 +87,37 @@ defmodule Day10Two do
                   0
                 end
 
+              # IO.write(".")
               {tiles, inside}
 
             _direction ->
               if inside == 1 do
+                # IO.write("1")
                 {MapSet.put(tiles, {r, c}), inside}
               else
+                # IO.write(" ")
+
                 {tiles, inside}
               end
           end
         end)
 
+      # IO.write("\n")
       tiles
     end)
   end
 
-  defp find_tiles_from_top(%{r_l: r_l, c_l: c_l} = map, inside_toggler) do
+  defp find_tiles_from_top(map, inside_toggler, opts \\ []) do
     # IO.inspect(inside_toggler)
+    start_i = Keyword.get(opts, :start_i, 0)
+    start_j = Keyword.get(opts, :start_j, 0)
+    r_l = Keyword.get(opts, :h, Map.get(map, :r_l))
+    c_l = Keyword.get(opts, :w, Map.get(map, :c_l))
 
-    0..c_l
+    start_j..c_l
     |> Enum.reduce(MapSet.new(), fn c, tiles ->
       {tiles, _} =
-        0..r_l
+        start_i..r_l
         |> Enum.reduce({tiles, 0}, fn r, {tiles, inside} ->
           case Map.get(map, {r, c}) do
             [_ | _] = direction ->
@@ -109,17 +128,21 @@ defmodule Day10Two do
                   0
                 end
 
+              # IO.write(".")
               {tiles, inside}
 
             _direction ->
               if inside == 1 do
+                # IO.write("1")
                 {MapSet.put(tiles, {r, c}), inside}
               else
+                # IO.write(" ")
                 {tiles, inside}
               end
           end
         end)
 
+      # IO.write("\n")
       tiles
     end)
   end
