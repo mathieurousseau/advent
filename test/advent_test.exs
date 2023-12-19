@@ -1,10 +1,11 @@
 defmodule AdventTest do
   use ExUnit.Case
 
-  @max_days 18
+  @year "2023"
+  @max_days 19
 
-  @force_day ["18"]
-  # @force_day nil
+  # @force_day ["19"]
+  @force_day nil
 
   @days @force_day ||
           1..@max_days
@@ -22,11 +23,11 @@ defmodule AdventTest do
   end
 
   defp do_run_test(day, part) do
-    {results, expected} = Advent.run("lib/inputs/test/", day, part)
+    {results, expected} = Advent.run("lib/#{@year}/inputs/test/", @year, day, part)
     assert {part, results} == {part, expected}
 
     if @force_day do
-      {real_output, _} = Advent.run("lib/inputs/real/", day, part)
+      {real_output, _} = Advent.run("lib/#{@year}/inputs/real/", @year, day, part)
       IO.puts("Day#{day}, Part #{part} => #{real_output}")
     end
   end

@@ -1,6 +1,6 @@
 defmodule Advent do
-  def run(path, day, part) do
-    day_mod = ("Elixir.Day" <> day <> part) |> String.to_atom()
+  def run(path, year, day, part) do
+    day_mod = ("Elixir.Aoc#{year}.Day" <> day <> part) |> String.to_atom()
 
     if File.exists?("#{path}/day#{day}_1.txt") do
       input_1 = File.read!("#{path}/day#{day}_1.txt")
