@@ -14,14 +14,14 @@ defmodule Aoc2023.Day08Two do
   defp gcd(0, b), do: b
   defp gcd(a, b), do: gcd(b, rem(a, b))
 
-  defp lcm(0, 0), do: 0
-  defp lcm(a, b) when is_number(a) and is_number(b), do: div(a * b, gcd(a, b))
+  def lcm(0, 0), do: 0
+  def lcm(a, b) when is_number(a) and is_number(b), do: div(a * b, gcd(a, b))
 
-  defp lcm([a, b]) do
+  def lcm([a, b]) do
     lcm(a, b)
   end
 
-  defp lcm([a | b]) do
+  def lcm([a | b]) do
     lcm(a, lcm(b))
   end
 

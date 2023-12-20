@@ -45,4 +45,19 @@ defmodule Aoc do
     |> Enum.map(fn {_k, v} -> v end)
     |> Enum.map(&Enum.reverse(&1))
   end
+
+  def gcd(a, 0), do: a
+  def gcd(0, b), do: b
+  def gcd(a, b), do: gcd(b, rem(a, b))
+
+  def lcm(0, 0), do: 0
+  def lcm(a, b) when is_number(a) and is_number(b), do: div(a * b, gcd(a, b))
+
+  def lcm([a, b]) do
+    lcm(a, b)
+  end
+
+  def lcm([a | b]) do
+    lcm(a, lcm(b))
+  end
 end
