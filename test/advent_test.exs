@@ -4,7 +4,7 @@ defmodule AdventTest do
   @year "2023"
   @max_days 21
 
-  @force_day ["21"]
+  @force_day ["22"]
   # @force_day nil
 
   @days @force_day ||
