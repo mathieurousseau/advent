@@ -2,14 +2,11 @@ defmodule AdventTest do
   use ExUnit.Case
 
   @year "2023"
-  @max_days 22
+  @day 23
 
-  @force_day ["22"]
-  # @force_day nil
-
-  @days @force_day ||
-          1..@max_days
-          |> Enum.map(fn day -> day |> Integer.to_string() |> String.pad_leading(2, "0") end)
+  @days if @day != :all,
+          do: [@day],
+          else: 1..25
 
   doctest Advent
 
@@ -17,6 +14,7 @@ defmodule AdventTest do
     @tag timeout: :infinity
     test "run #{day}" do
       day = unquote(day)
+      day = Integer.to_string(day) |> String.pad_leading(2, "0")
       do_run_test(day, "One")
       do_run_test(day, "Two")
     end
@@ -26,7 +24,7 @@ defmodule AdventTest do
     {results, expected} = Advent.run("lib/#{@year}/inputs/test/", @year, day, part)
     assert {part, results} == {part, expected}
 
-    if @force_day do
+    if @day != :all do
       {real_output, _} = Advent.run("lib/#{@year}/inputs/real/", @year, day, part)
       IO.puts("Day#{day}, Part #{part} => #{real_output}")
     end
