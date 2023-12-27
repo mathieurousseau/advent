@@ -5,16 +5,7 @@ defmodule Aoc2023.Day16Two do
   end
 
   defp do_run(input) do
-    #
     parsed_data = parse_data(input)
-
-    #   {energized, _visited} =walk(parsed_data, {0, 0}, :right, {%{{0, 0} => 1}, %{{{0, 0}, :right} => 1}})
-
-    #   |> walk({0, 0}, :right, {%{}, %{}})
-
-    # # |> dbg
-
-    # map_size(energized)
 
     entry_points(input)
     |> Task.async_stream(fn {i, j, direction} ->

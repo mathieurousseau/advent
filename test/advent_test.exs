@@ -2,7 +2,7 @@ defmodule AdventTest do
   use ExUnit.Case
 
   @year "2023"
-  @max_days 21
+  @max_days 22
 
   @force_day ["22"]
   # @force_day nil

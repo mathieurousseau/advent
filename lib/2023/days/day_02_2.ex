@@ -4,7 +4,7 @@ defmodule Aoc2023.Day02Two do
     {do_run(input), @expected}
   end
 
-  @available_cubes %{"red" => 12, "green" => 13, "blue" => 14}
+  # @available_cubes %{"red" => 12, "green" => 13, "blue" => 14}
 
   defp do_run(input) do
     lines = String.split(input, "\n", trim: true)

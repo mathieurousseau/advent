@@ -104,12 +104,8 @@ defmodule Aoc2023.Day12Two do
       [springs, checks] = line |> String.split(" ")
       springs = List.duplicate(springs, 5) |> Enum.join("?")
       checks = List.duplicate(checks, 5) |> Enum.join(",")
-      # [springs, checks] =
-      # [String.duplicate(springs, 5), String.duplicate(checks <> ",", 5)] |> dbg
 
       checks = String.split(checks, ",", trim: true) |> Enum.map(&String.to_integer(&1))
-      # dbg(springs)
-      # dbg(checks)
       [{springs, checks} | acc]
     end)
     |> Enum.reverse()

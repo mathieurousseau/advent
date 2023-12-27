@@ -15,20 +15,7 @@ defmodule Aoc2023.Day17One do
     one = Graph.dijkstra(g, {0, 0}, {h - 1, w - 1, :right}) |> calc(g, 0)
 
     two = Graph.dijkstra(g, {0, 0}, {h - 1, w - 1, :down}) |> calc(g, 0)
-    # Graph.dijkstra(g, {0, 0, :down}, {h - 1, w - 1, :right}) |> dbg
-    # Graph.dijkstra(g, {0, 0, :down}, {h - 1, w - 1, :down}) |> dbg
-    # {_, {_, _, res_2}} = walk(map, {{0, 0}, :right}, 0, h, w, nil, {%{}, MapSet.new(), nil})
-    # {_, {_, _, res_2}} = walk(map, {{0, 0}, :right}, 0, h, w, nil, {%{}, MapSet.new(), nil})
-    # {_, {_, _, res_2}} = walk(map, {{0, 0}, :down, 0}, 0, h, w, nil, ctx)
-    # {memo, visiting} = Agent.get(:memo, fn state -> state end)
 
-    # memo
-    # |> Enum.each(fn
-    #   {{{0, 4}, _, _}, _} = m -> IO.inspect(m)
-    #   _ -> nil
-    # end)
-
-    # res_2
     min(one, two)
   end
 
@@ -71,7 +58,7 @@ defmodule Aoc2023.Day17One do
     end)
   end
 
-  @opposites %{left: :right, right: :left, up: :down, down: :up}
+  # @opposites %{left: :right, right: :left, up: :down, down: :up}
   defp next_steps(point, direction, map) do
     directions =
       cond do

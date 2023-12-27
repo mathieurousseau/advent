@@ -36,7 +36,6 @@ defmodule Aoc2023.Day10Two do
     [from_left, from_up] = find_direction(map)
     Map.get(map, start)
     count_inner(map, from_left, from_up)
-    # dbg()
   end
 
   def count_inner(map, from_left_togglers, from_top_togglers, opts \\ []) do

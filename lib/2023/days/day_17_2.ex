@@ -58,7 +58,7 @@ defmodule Aoc2023.Day17Two do
     end)
   end
 
-  @opposites %{left: :right, right: :left, up: :down, down: :up}
+  # @opposites %{left: :right, right: :left, up: :down, down: :up}
   defp next_steps(point, direction, map) do
     directions =
       cond do

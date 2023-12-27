@@ -7,7 +7,6 @@ defmodule Aoc2023.Day13One do
   defp do_run(input) do
     String.split(input, "\n\n", trim: true)
     |> Enum.chunk_every(2)
-    # |> dbg
     |> Enum.map(fn [pattern_1, pattern_2] ->
       [process_patterns(pattern_1), process_patterns(pattern_2)] |> Enum.sum()
     end)

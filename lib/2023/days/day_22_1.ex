@@ -1,7 +1,43 @@
 defmodule Aoc2023.Day22One do
-  alias Aoc2023.Day22.Level
-  alias Aoc2023.Day22.Meta
-  alias Aoc2023.Day22.Brick
+  defmodule Brick do
+    defstruct id: nil,
+              x: nil,
+              y: nil,
+              z: nil,
+              xl: nil,
+              yl: nil,
+              zl: nil,
+              xe: nil,
+              ye: nil,
+              ze: nil,
+              xr: nil,
+              yr: nil,
+              supported_by: []
+  end
+
+  defmodule Level do
+    defstruct bricks: []
+  end
+
+  defmodule Meta do
+    @base_brick %Brick{
+      id: -1,
+      x: 0,
+      y: 0,
+      z: 0,
+      xl: 10,
+      yl: 10,
+      zl: 1,
+      xe: 10,
+      ye: 10,
+      ze: 1,
+      xr: 0..10,
+      yr: 0..10
+    }
+    @base_level %Level{bricks: [@base_brick]}
+    defstruct levels: %{0 => @base_level}, height: -1
+  end
+
   @expected 5
   def run(input) do
     {do_run(input), @expected}
@@ -11,7 +47,6 @@ defmodule Aoc2023.Day22One do
     meta =
       parse(input)
       |> Enum.sort(fn brick1, brick2 -> brick1.z < brick2.z end)
-      |> dbg
       |> Enum.reduce(%Meta{}, &stack_bricks(&1, &2))
 
     # print(meta)
@@ -24,6 +59,7 @@ defmodule Aoc2023.Day22One do
     meta = %{meta | height: height}
 
     # print(meta)
+    # raise("mathieu")
 
     destroyable_bricks = find_bricks(meta)
     # IO.inspect(destroyable_bricks, limit: :infinity)
@@ -59,17 +95,17 @@ defmodule Aoc2023.Day22One do
         # IO.inspect(brick)
         # IO.inspect(above_brick)
 
-        Enum.member?(above_brick.supporting_bricks, brick)
+        Enum.member?(above_brick.supported_by, brick)
         # above_brick.z == brick.ze
       end)
 
     supported_bricks
     |> Enum.all?(fn above_brick ->
-      length(above_brick.supporting_bricks) > 1
+      length(above_brick.supported_by) > 1
     end)
   end
 
-  defp can_destroy?(brick, level_id, level_above), do: false
+  defp can_destroy?(_brick, _level_id, _level_above), do: false
 
   defp add_list_to_set(list, set), do: Enum.reduce(list, set, &MapSet.put(&2, &1.id))
 
@@ -84,7 +120,7 @@ defmodule Aoc2023.Day22One do
       level.bricks
       |> Enum.each(fn brick ->
         IO.write(
-          "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(brick.supporting_bricks |> Enum.map(& &1.id) |> Enum.join(","))}\n"
+          "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(brick.supported_by |> Enum.map(& &1.id) |> Enum.join(","))}\n"
         )
       end)
     end)
@@ -96,14 +132,14 @@ defmodule Aoc2023.Day22One do
     brick.z..0
     |> Enum.reduce_while(meta, fn current_z, meta ->
       with prev_level when not is_nil(prev_level) <- Map.get(meta.levels, current_z),
-           [_ | _] = supporting_bricks <- prev_level_supporting_bricks(prev_level, brick) do
+           [_ | _] = supported_by <- prev_level_supported_by(prev_level, brick) do
         brick_z = current_z + 1
 
         brick = %{
           brick
           | z: brick_z,
             ze: current_z + brick.zl,
-            supporting_bricks: supporting_bricks
+            supported_by: supported_by
         }
 
         meta =
@@ -122,7 +158,7 @@ defmodule Aoc2023.Day22One do
     end)
   end
 
-  defp prev_level_supporting_bricks(prev_level, brick) do
+  defp prev_level_supported_by(prev_level, brick) do
     prev_level.bricks |> Enum.filter(&prev_brick_blocking?(&1, brick))
   end
 
