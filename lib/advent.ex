@@ -1,5 +1,5 @@
 defmodule Advent do
-  def run(path, year, day, part) do
+  def run(path, year, day, part, test \\ true) do
     day_mod = ("Elixir.Aoc#{year}.Day" <> day <> part) |> String.to_atom()
 
     if File.exists?("#{path}/day#{day}_1.txt") do
@@ -12,7 +12,7 @@ defmodule Advent do
       end
     else
       input = File.read!("#{path}/day#{day}.txt")
-      day_mod.run(input)
+      day_mod.run(input, test)
     end
   end
 end
