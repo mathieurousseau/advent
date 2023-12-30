@@ -31,7 +31,7 @@ defmodule Aoc2023.Day24One do
   end
 
   defp do_run(input, [low, high]) do
-    segments = parse(input) |> Enum.map(&calculate_equation(&1, low, high)) |> dbg
+    segments = parse(input) |> Enum.map(&calculate_equation(&1))
 
     for s1 <- segments, s2 <- segments do
       if(s1 != s2) do
@@ -57,7 +57,7 @@ defmodule Aoc2023.Day24One do
       (yi > y2 and yv2 < 0) or (yi < y2 and yv2 > 0)
   end
 
-  defp calculate_equation(%Segment{x: x, y: y, xv: xv, yv: yv} = segment, low, high) do
+  defp calculate_equation(%Segment{x: x, y: y, xv: xv, yv: yv} = segment) do
     m = yv / xv
     yi = y - m * x
     %{segment | m: m, yi: yi, a: m, b: -1, c: yi}
