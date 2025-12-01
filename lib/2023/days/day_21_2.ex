@@ -136,7 +136,7 @@ defmodule Aoc2023.Day21Two do
                 0
               )
 
-            next_frame_size = MapSet.size(reached)
+            MapSet.size(reached)
           end
         end)
       end)
@@ -155,7 +155,7 @@ defmodule Aoc2023.Day21Two do
     inter_second_half = (a + b + c + d) |> dbg
 
     center = pattern |> Enum.at(2) |> Enum.at(2) |> dbg
-    next_to_center = pattern |> Enum.at(2) |> Enum.at(3) |> dbg
+    # next_to_center = pattern |> Enum.at(2) |> Enum.at(3) |> dbg
 
     [a, _, _, _, b] = Enum.at(pattern, 2)
     middle = (a + b) |> dbg
@@ -255,7 +255,7 @@ defmodule Aoc2023.Day21Two do
     # IO.inspect(steps)
     {_, reached} = walk(start, matrix, steps, h, w, {0, 0}, {%{}, MapSet.new()}, 0)
     # {_, reached} = walk(start, matrix, steps, h, w, {0, 0}, {%{}, MapSet.new()}, 0)
-    {min_x, min_y, max_x, max_y} = min_max_matrix(reached)
+    # {min_x, min_y, max_x, max_y} = min_max_matrix(reached)
 
     # print(
     #   matrix,
@@ -275,62 +275,62 @@ defmodule Aoc2023.Day21Two do
     # end
   end
 
-  defp min_max_matrix(matrix) do
-    Enum.reduce(matrix, {0, 0, 0, 0}, fn {x, y}, {min_x, min_y, max_x, max_y} ->
-      min_x = min(x, min_x)
-      min_y = min(y, min_y)
-      max_x = max(x, max_x)
-      max_y = max(y, max_y)
-      {min_x, min_y, max_x, max_y}
-    end)
-  end
+  # defp min_max_matrix(matrix) do
+  #   Enum.reduce(matrix, {0, 0, 0, 0}, fn {x, y}, {min_x, min_y, max_x, max_y} ->
+  #     min_x = min(x, min_x)
+  #     min_y = min(y, min_y)
+  #     max_x = max(x, max_x)
+  #     max_y = max(y, max_y)
+  #     {min_x, min_y, max_x, max_y}
+  #   end)
+  # end
 
-  defp print(matrix, reached, s_x, s_y, e_x, e_y, h, w, start) do
-    {:ok, file} = File.open("day21.vis", [:write, :utf8])
-
-    for x <- s_x..e_x, y <- s_y..e_y do
-      # IO.inspect({x, y})
-      inf_x = rem(h + rem(x, h), h)
-      inf_y = rem(w + rem(y, w), w)
-
-      if MapSet.member?(reached, {x, y}) do
-        # IO.write("O")
-        if({inf_x, inf_y} == start) do
-          IO.write(file, "🟪")
-        else
-          IO.write(file, "🟪")
-        end
-      else
-        # next = Map.get(matrix, {inf_x, inf_y})
-
-        case Map.get(matrix, {inf_x, inf_y}) do
-          nil ->
-            raise("no")
-
-          "S" ->
-            # IO.write(".")
-            IO.write(file, "S")
-
-          " " ->
-            raise("no space")
-
-          "." ->
-            IO.write(file, "⬜")
-
-          "#" ->
-            IO.write(file, "⬛")
-            # IO.write(c)
-        end
-      end
-
-      if e_y - y == 0 do
-        # IO.write("\n")
-        IO.write(file, "\n")
-      end
-    end
-
-    File.close(file)
-  end
+  # defp print(matrix, reached, s_x, s_y, e_x, e_y, h, w, start) do
+  #   {:ok, file} = File.open("day21.vis", [:write, :utf8])
+  #
+  #   for x <- s_x..e_x, y <- s_y..e_y do
+  #     # IO.inspect({x, y})
+  #     inf_x = rem(h + rem(x, h), h)
+  #     inf_y = rem(w + rem(y, w), w)
+  #
+  #     if MapSet.member?(reached, {x, y}) do
+  #       # IO.write("O")
+  #       if({inf_x, inf_y} == start) do
+  #         IO.write(file, "🟪")
+  #       else
+  #         IO.write(file, "🟪")
+  #       end
+  #     else
+  #       # next = Map.get(matrix, {inf_x, inf_y})
+  #
+  #       case Map.get(matrix, {inf_x, inf_y}) do
+  #         nil ->
+  #           raise("no")
+  #
+  #         "S" ->
+  #           # IO.write(".")
+  #           IO.write(file, "S")
+  #
+  #         " " ->
+  #           raise("no space")
+  #
+  #         "." ->
+  #           IO.write(file, "⬜")
+  #
+  #         "#" ->
+  #           IO.write(file, "⬛")
+  #           # IO.write(c)
+  #       end
+  #     end
+  #
+  #     if e_y - y == 0 do
+  #       # IO.write("\n")
+  #       IO.write(file, "\n")
+  #     end
+  #   end
+  #
+  #   File.close(file)
+  # end
 
   @directions [{0, 1}, {1, 0}, {0, -1}, {-1, 0}]
 
@@ -367,31 +367,30 @@ defmodule Aoc2023.Day21Two do
     # Agent.update(:ctx, fn _ -> {visited, reached} end)
 
     # if steps > 0 do
-    {visited, reached} =
-      if steps > 0 and (is_nil(visited_at_step) or visited_at_step < steps) do
-        (@directions -- [{-p_x, -p_y}])
-        |> Enum.reduce({visited, reached}, fn {x_off, y_off} = dir, {visited, reached} ->
-          {n_x, n_y} = next_coord = {x + x_off, y + y_off}
+    if steps > 0 and (is_nil(visited_at_step) or visited_at_step < steps) do
+      (@directions -- [{-p_x, -p_y}])
+      |> Enum.reduce({visited, reached}, fn {x_off, y_off} = dir, {visited, reached} ->
+        {n_x, n_y} = next_coord = {x + x_off, y + y_off}
 
-          inf_x = rem(h + rem(n_x, h), h)
-          inf_y = rem(w + rem(n_y, w), w)
-          next = Map.get(matrix, {inf_x, inf_y})
+        inf_x = rem(h + rem(n_x, h), h)
+        inf_y = rem(w + rem(n_y, w), w)
+        next = Map.get(matrix, {inf_x, inf_y})
 
-          # if is_nil(next) do
-          #   IO.inspect(point)
-          #   IO.inspect(next_coord)
-          #   IO.inspect({rem(n_x, h), rem(n_y, w)})
-          # end
+        # if is_nil(next) do
+        #   IO.inspect(point)
+        #   IO.inspect(next_coord)
+        #   IO.inspect({rem(n_x, h), rem(n_y, w)})
+        # end
 
-          if next == "." or next == "S" do
-            walk(next_coord, matrix, steps - 1, h, w, dir, {visited, reached}, rem)
-          else
-            {visited, reached}
-          end
-        end)
-      else
-        {visited, reached}
-      end
+        if next == "." or next == "S" do
+          walk(next_coord, matrix, steps - 1, h, w, dir, {visited, reached}, rem)
+        else
+          {visited, reached}
+        end
+      end)
+    else
+      {visited, reached}
+    end
   end
 
   defp visit(visited, point, steps, rem), do: Map.put(visited, {point, rem}, steps)

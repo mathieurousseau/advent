@@ -46,5 +46,6 @@ defmodule Aoc2023.Day23One do
 
   defp parse(input) do
     {matrix, h, w} = Aoc.to_matrix_map(input)
+    {matrix, h, w}
   end
 end

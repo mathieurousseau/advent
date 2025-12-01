@@ -5,7 +5,7 @@ defmodule Advent.MixProject do
     [
       app: :advent,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
       preferred_cli_env: [test: :test, "test.watch": :test],
       deps: deps()
@@ -23,7 +23,7 @@ defmodule Advent.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:mix_test_watch, "~> 1.0", only: :test, runtime: false},
+      {:mix_test_watch, "~> 1.4", only: :test, runtime: false},
       {:libgraph, "~> 0.16.0"}
 
       # {:dep_from_hexpm, "~> 0.3.0"},

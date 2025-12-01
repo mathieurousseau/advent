@@ -30,7 +30,7 @@ defmodule Aoc2023.Day24Two do
     {do_run(input, input_options), @expected}
   end
 
-  defp do_run(input, [low, high]) do
+  defp do_run(input, [_low, _high]) do
     {segments, max_velocity} =
       parse(input)
 

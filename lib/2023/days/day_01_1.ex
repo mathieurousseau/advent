@@ -27,19 +27,4 @@ defmodule Aoc2023.Day01One do
         (String.at(digits, 0) <> String.at(digits, digits_length - 1)) |> String.to_integer()
     end
   end
-
-  @map %{
-    "one" => 1,
-    "two" => 2,
-    "three" => 3,
-    "four" => 4,
-    "five" => 5,
-    "six" => 6,
-    "seven" => 7,
-    "eight" => 8,
-    "nine" => 9
-  }
-  @keys ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-  @regex_match Enum.join(@keys, "|")
-  @reversed_regex String.reverse(@regex_match)
 end

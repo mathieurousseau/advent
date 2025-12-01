@@ -109,24 +109,24 @@ defmodule Aoc2023.Day22One do
 
   defp add_list_to_set(list, set), do: Enum.reduce(list, set, &MapSet.put(&2, &1.id))
 
-  defp print(meta) do
-    IO.puts("height: #{meta.height}")
-
-    meta.height..0
-    |> Enum.each(fn level_id ->
-      level = Map.get(meta.levels, level_id)
-      IO.puts("\n#level[#{level_id}]:")
-
-      level.bricks
-      |> Enum.each(fn brick ->
-        IO.write(
-          "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(brick.supported_by |> Enum.map(& &1.id) |> Enum.join(","))}\n"
-        )
-      end)
-    end)
-
-    meta
-  end
+  # defp print(meta) do
+  #   IO.puts("height: #{meta.height}")
+  #
+  #   meta.height..0
+  #   |> Enum.each(fn level_id ->
+  #     level = Map.get(meta.levels, level_id)
+  #     IO.puts("\n#level[#{level_id}]:")
+  #
+  #     level.bricks
+  #     |> Enum.each(fn brick ->
+  #       IO.write(
+  #         "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(brick.supported_by |> Enum.map(& &1.id) |> Enum.join(","))}\n"
+  #       )
+  #     end)
+  #   end)
+  #
+  #   meta
+  # end
 
   defp stack_bricks(brick, meta) do
     brick.z..0

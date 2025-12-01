@@ -1,7 +1,6 @@
 defmodule Aoc2023.Day03Two do
   @expected 467_835
 
-  @symbols ["*", "=", "#", "$", "@", "/", "-", "%", "&", "+"]
   def run(input) do
     {do_run(input), @expected}
   end

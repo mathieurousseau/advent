@@ -60,12 +60,8 @@ defmodule Aoc2023.Day22Two do
       supported_bricks
       |> Enum.reduce(falling, fn supported_brick, falling ->
         # if MapSet.intersection() MapSet.new(supported_brick.supported_by)
-        b = NaiveDateTime.utc_now()
         supported_by = Map.get(meta.supported_by, supported_brick)
         all = Enum.all?(supported_by, &MapSet.member?(falling, &1))
-
-        a = NaiveDateTime.utc_now()
-        # IO.puts("#{NaiveDateTime.diff(a, b)} - #{MapSet.size(supported_by)}")
 
         if all do
           falling = MapSet.put(falling, supported_brick)
@@ -137,26 +133,26 @@ defmodule Aoc2023.Day22Two do
 
   # defp add_list_to_set(list, set), do: Enum.reduce(list, set, &MapSet.put(&2, &1.id))
 
-  defp print(meta) do
-    IO.puts("height: #{meta.height}")
-
-    meta.height..0
-    |> Enum.each(fn level_id ->
-      level = Map.get(meta.levels, level_id)
-      IO.puts("\n#level[#{level_id}]:")
-
-      level.bricks
-      |> Enum.each(fn brick_id ->
-        brick = Map.get(meta.bricks, brick_id)
-
-        IO.write(
-          "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(Map.get(meta.supported_by, brick.id, MapSet.new()) |> Enum.join(","))}\n"
-        )
-      end)
-    end)
-
-    meta
-  end
+  # defp print(meta) do
+  #   IO.puts("height: #{meta.height}")
+  #
+  #   meta.height..0
+  #   |> Enum.each(fn level_id ->
+  #     level = Map.get(meta.levels, level_id)
+  #     IO.puts("\n#level[#{level_id}]:")
+  #
+  #     level.bricks
+  #     |> Enum.each(fn brick_id ->
+  #       brick = Map.get(meta.bricks, brick_id)
+  #
+  #       IO.write(
+  #         "  brick[x: #{inspect(brick.xr)} y: #{inspect(brick.yr)}, z: #{brick.z}..#{brick.ze}, id: #{brick.id}] by #{inspect(Map.get(meta.supported_by, brick.id, MapSet.new()) |> Enum.join(","))}\n"
+  #       )
+  #     end)
+  #   end)
+  #
+  #   meta
+  # end
 
   defp stack_bricks(brick, meta) do
     brick.z..0

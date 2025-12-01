@@ -4,7 +4,7 @@ defmodule Aoc2023.Day07Two do
     {do_run(input), @expected}
   end
 
-  @card_order Stream.zip(~w(A K Q T 9 8 7 6 5 4 3 2 J X), 14..0) |> Map.new()
+  @card_order Stream.zip(~w(A K Q T 9 8 7 6 5 4 3 2 J X), 14..0//-1) |> Map.new()
   defp do_run(input) do
     list = parse_data(input)
 

@@ -1,6 +1,6 @@
 defmodule Aoc2023.Day25One do
   @expected 54
-  def run(input, opts \\ []) do
+  def run(input, _opts \\ []) do
     {do_run(input), @expected}
   end
 

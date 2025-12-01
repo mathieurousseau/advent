@@ -1,18 +1,29 @@
 defmodule Advent do
   def run(path, year, day, part, test \\ true) do
     day_mod = ("Elixir.Aoc#{year}.Day" <> day <> part) |> String.to_atom()
-
-    if File.exists?("#{path}/day#{day}_1.txt") do
-      input_1 = File.read!("#{path}/day#{day}_1.txt")
-      input_2 = File.read!("#{path}/day#{day}_2.txt")
-
+    part_num =
       case part do
-        "One" -> day_mod.run(input_1)
-        "Two" -> day_mod.run(input_2)
+        "One" -> 1
+        "Two" -> 2
       end
+
+    file_path =
+      if test do
+        "#{path}/day#{day}_#{part_num}_test.txt"
+      else
+        "#{path}/day#{day}.txt"
+      end
+
+    do_run(file_path, day_mod)
+  end
+
+  defp do_run(file_path, day_mod) do
+    if File.exists?(file_path) and Code.ensure_loaded?(day_mod) do
+      file_path
+      |> File.read!()
+      |> day_mod.run()
     else
-      input = File.read!("#{path}/day#{day}.txt")
-      day_mod.run(input, test)
+      {:error, "File not found: #{file_path}"}
     end
   end
 end

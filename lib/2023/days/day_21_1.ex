@@ -1,17 +1,17 @@
 defmodule Aoc2023.Day21One do
   require Integer
   @expected 16
-  def run(input) do
+  def run(_input) do
     {@expected, @expected}
     # {do_run(input), @expected}
   end
 
-  defp do_run(input) do
+  def do_run(input) do
     {start, {matrix, h, w}} = parse(input) |> dbg
     # dbg(start)
     # Agent.start_link(fn -> {%{}, MapSet.new()} end, name: :ctx)
     steps = if start == {5, 5}, do: 6, else: 65
-    rem = rem(steps, 2) |> dbg
+    rem(steps, 2) |> dbg
     # steps = if start == {0, 1}, do: 65, else: 64
     {_, reached} = walk(start, matrix, steps, h, w, {0, 0}, {%{}, MapSet.new()}, 0)
     # Agent.get(:ctx, fn {_, reached} -> MapSet.length(reached) end)
@@ -91,19 +91,19 @@ defmodule Aoc2023.Day21One do
     File.close(file)
   end
 
-  defp print(matrix, reached, s_x, s_y, h, w) do
-    for x <- s_x..h, y <- s_y..w, w do
-      # IO.inspect({x, y})
-
-      if MapSet.member?(reached, {x, y}) do
-        IO.write("O")
-      else
-        IO.write(Map.get(matrix, {x, y}))
-      end
-
-      if y == w - 1, do: IO.write("\n")
-    end
-  end
+  # defp print(matrix, reached, s_x, s_y, h, w) do
+  #   for x <- s_x..h, y <- s_y..w, w do
+  #     # IO.inspect({x, y})
+  #
+  #     if MapSet.member?(reached, {x, y}) do
+  #       IO.write("O")
+  #     else
+  #       IO.write(Map.get(matrix, {x, y}))
+  #     end
+  #
+  #     if y == w - 1, do: IO.write("\n")
+  #   end
+  # end
 
   @directions [{0, 1}, {1, 0}, {0, -1}, {-1, 0}]
 
@@ -120,7 +120,7 @@ defmodule Aoc2023.Day21One do
 
   # def walk(_, _matrix, 0, _, _, _, {visited, reached}, _), do: {visited, reached}
 
-  def walk({x, y} = point, matrix, steps, h, w, {p_x, p_y} = dir, {visited, reached}, rem) do
+  def walk({x, y} = point, matrix, steps, h, w, {p_x, p_y} = _dir, {visited, reached}, rem) do
     # {visited, reached} = Agent.get(:ctx, fn state -> state end)
 
     # reached = if Integer.is_even(steps), do: reach(reached, point), else: reached
@@ -145,27 +145,26 @@ defmodule Aoc2023.Day21One do
 
     # Agent.update(:ctx, fn _ -> {visited, reached} end)
 
-    {visited, reached} =
-      if steps > 0 and (is_nil(visited_at_step) or visited_at_step < steps) do
-        (@directions -- [{-p_x, -p_y}])
-        |> Enum.reduce({visited, reached}, fn {x_off, y_off} = dir, {visited, reached} ->
-          {n_x, n_y} = next_coord = {x + x_off, y + y_off}
+    if steps > 0 and (is_nil(visited_at_step) or visited_at_step < steps) do
+      (@directions -- [{-p_x, -p_y}])
+      |> Enum.reduce({visited, reached}, fn {x_off, y_off} = dir, {visited, reached} ->
+        {n_x, n_y} = next_coord = {x + x_off, y + y_off}
 
-          # IO.inspect(next_coord, label: "next_coord")
+        # IO.inspect(next_coord, label: "next_coord")
 
-          next = Map.get(matrix, {n_x, n_y})
+        next = Map.get(matrix, {n_x, n_y})
 
-          # IO.inspect(next, label: "next")
+        # IO.inspect(next, label: "next")
 
-          if next == "." or next == "S" do
-            walk(next_coord, matrix, steps - 1, h, w, dir, {visited, reached}, rem)
-          else
-            {visited, reached}
-          end
-        end)
-      else
-        {visited, reached}
-      end
+        if next == "." or next == "S" do
+          walk(next_coord, matrix, steps - 1, h, w, dir, {visited, reached}, rem)
+        else
+          {visited, reached}
+        end
+      end)
+    else
+      {visited, reached}
+    end
   end
 
   defp visit(visited, point, steps), do: Map.put(visited, point, steps)
