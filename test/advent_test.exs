@@ -2,7 +2,7 @@ defmodule AdventTest do
   use ExUnit.Case
 
   @year "2025"
-  @day 1
+  @day 2
 
   @days if @day != :all,
           do: [@day],
@@ -21,8 +21,8 @@ defmodule AdventTest do
   end
 
   defp do_run_test(day, part) do
-    {results, expected} = Advent.run("lib/#{@year}/inputs/", @year, day, part, true) 
-    assert {part, results} == {part, expected} 
+    {results, expected} = Advent.run("lib/#{@year}/inputs/", @year, day, part, true)
+    assert {part, results} == {part, expected}
 
     if @day != :all do
       {real_output, _} = Advent.run("lib/#{@year}/inputs/", @year, day, part, false)
