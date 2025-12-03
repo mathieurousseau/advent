@@ -2,7 +2,7 @@ defmodule AdventTest do
   use ExUnit.Case
 
   @year "2025"
-  @day 3
+  @day 4
 
   @days if @day != :all,
           do: [@day],

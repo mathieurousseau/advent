@@ -1,6 +1,7 @@
 defmodule Advent do
   def run(path, year, day, part, test \\ true) do
     day_mod = ("Elixir.Aoc#{year}.Day" <> day <> part) |> String.to_atom()
+
     part_num =
       case part do
         "One" -> 1
@@ -23,7 +24,7 @@ defmodule Advent do
       |> File.read!()
       |> day_mod.run()
     else
-      {:error, "File not found: #{file_path}"}
+      {:not_ready, :not_ready}
     end
   end
 end

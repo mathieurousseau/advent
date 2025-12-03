@@ -1,5 +1,5 @@
-defmodule Aoc2025.DayXXTwo do
-  @expected nil
+defmodule Aoc2025.DayXXOne do
+  @expected :success
   def run(input) do
     {do_run(input), @expected}
   end
@@ -8,6 +8,8 @@ defmodule Aoc2025.DayXXTwo do
     parse(input)
   end
 
-  defp parse(_input) do
+  defp parse(input) do
+    IO.inspect(input)
+    :success
   end
 end

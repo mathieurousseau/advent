@@ -7,9 +7,12 @@ defmodule Advent.MixProject do
       version: "0.1.0",
       elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,
-      preferred_cli_env: [test: :test, "test.watch": :test],
       deps: deps()
     ]
+  end
+
+  def cli do
+    [preferred_envs: [test: :test, "test.watch": :test]]
   end
 
   # Run "mix help compile.app" to learn about applications.

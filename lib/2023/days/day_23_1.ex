@@ -11,7 +11,7 @@ defmodule Aoc2023.Day23One do
 
   defp walk({h, w} = _point, _matrix, _visited, {h, w}), do: 1
 
-  defp walk(point, matrix, visited, the_end) do
+  defp walk(point, matrix, %MapSet{} = visited, the_end) do
     with false <- MapSet.member?(visited, point),
          visited <- MapSet.put(visited, point),
          current <- Map.get(matrix, point),

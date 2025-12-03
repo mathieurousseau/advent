@@ -103,7 +103,7 @@ defmodule Aoc2023.Day16Two do
           walk(map, next(:down, point), :down, memo)
 
         wrong ->
-          raise("#{wrong}")
+          raise("#{inspect(wrong)}")
       end
     end
 
